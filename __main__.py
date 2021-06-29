@@ -7,26 +7,25 @@ import pulumi_kubernetes as k8s
 # get our config values
 config = pulumi.Config();
 clusterName = config.require('cluster-name');
-region = config.require('region'); # "nyc3"
+clusterRegion = config.require('region'); # "nyc3"
 nodePoolName = config.require('node-pool-name');
 nodeSize = config.require('node-size'); # "s-1vcpu-2gb"
 nodeCount = config.require('node-count'); # "4"
-tag = config.require('tag'); # "matty-workshop"
-
+nodeTag = config.require('tag'); # "matty-workshop"
 
 # grab the latest version available from DigitalOcean
 ver = do.get_kubernetes_versions()
 
 # provision a Kubernetes cluster
 cluster = do.KubernetesCluster(
-    config.get('clusterName'),
-    region="nyc3",
+    clusterName,
+    region=clusterRegion,
     version=ver.latest_version,
     node_pool=do.KubernetesClusterNodePoolArgs(
-        name="matty-workshop-pool", 
-        size="s-1vcpu-2gb", 
-        node_count=4,
-        tags=["matty-workshop"]
+        name=nodePoolName, 
+        size=nodeSize, 
+        node_count=config.get_int('node-count'),
+        tags=[nodeTag]
     ),
 )
 
