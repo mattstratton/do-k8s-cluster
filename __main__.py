@@ -6,9 +6,9 @@ import pulumi_kubernetes as k8s
 
 # get our config values
 config = pulumi.Config();
-clusterName = config.require('cluster-name');
+clusterName = config.require('cluster-name'); # "my-cluster"
 clusterRegion = config.require('region'); # "nyc3"
-nodePoolName = config.require('node-pool-name');
+nodePoolName = config.require('node-pool-name'); # "my-cluster-pool"
 nodeSize = config.require('node-size'); # "s-1vcpu-2gb"
 nodeCount = config.require('node-count'); # "4"
 nodeTag = config.require('tag'); # "matty-workshop"
